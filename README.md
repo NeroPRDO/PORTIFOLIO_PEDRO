@@ -63,9 +63,6 @@ PORTIFOLIO_PEDRO/
 └───Styles
         styles.css
 ```
-
-> Observação: mantenha imagens e recursos organizados na pasta `images/` para facilitar referência e inserção em novos projetos.
-
 ---
 
 ## 🎯 Objetivos deste portfólio
@@ -88,51 +85,6 @@ PORTIFOLIO_PEDRO/
 - Links de contato (e-mail, GitHub, LinkedIn).
 - Uso básico de meta tags (viewport, description) para SEO e responsividade.
 - Estrutura limpa que facilita atualizações e inclusão de novos projetos.
-
----
-
-## ♿ Acessibilidade e SEO — boas práticas adotadas / recomendadas
-
-- Uso de elementos semânticos (`<header>`, `<main>`, `<section>`, `<footer>`) para melhor leitura por ferramentas assistivas.
-- Atributos `alt` em imagens para descrever conteúdos visuais.
-- Contrastes adequados entre o texto e o fundo.
-- Tamanhos de fonte legíveis e botões com áreas clicáveis generosas.
-- Meta tags `title` e `description` configuradas para melhorar a indexação.
-- Recomendo validação com Lighthouse para avaliar desempenho, acessibilidade e melhores práticas.
-
----
-
-## 🚀 Publicação (GitHub Pages)
-
-Se ainda não publicou, a publicação é simples e rápida pelo próprio GitHub:
-
-1. Acesse as configurações do repositório (**Settings > Pages**).
-2. Em *Source*, selecione a branch `main` (ou `gh-pages`) e a pasta `/ (root)`.
-3. Salve e aguarde alguns minutos; a URL normalmente será:
-```
-https://NeroPRDO.github.io/PORTIFOLIO_PEDRO/
-```
-
-Após publicar, cole o link no topo do README (substitua o placeholder do demo).
-
----
-
-## 🔧 Sugestões de melhorias técnicas (prioridade e motivo)
-
-1. **Lazy-loading de imagens** — reduz tempo de carregamento, especialmente em mobile.  
-2. **Minificação de CSS/JS** — melhora performance e pontuação em PageSpeed/Lighthouse.  
-3. **Formulário de contato funcional** — integrar Formspree, Netlify Forms ou um endpoint simples para enviar mensagens.  
-4. **Adicionar `manifest.json` + favicon** — melhora a experiência em dispositivos móveis (instalável como PWA leve).  
-5. **Analytics (opcional)** — Google Analytics / Plausible para acompanhar visitas e comportamento.  
-6. **Automação de build (opcional)** — usar GitHub Actions para validar e otimizar assets a cada commit.  
-7. **Adicionar testes rápidos de responsividade** — configurar uma Action que rode Lighthouse ou checks automatizados.  
-
----
-
-## 📄 Licença recomendada
-
-Recomendo a **MIT License** para portfólios pessoais — simples, permissiva e amplamente utilizada.  
-Se quiser, posso gerar o arquivo `LICENSE` com o texto pronto.
 
 ---
 
