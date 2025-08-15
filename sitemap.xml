@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://neroprdo.github.io/PORTIFOLIO_PEDRO/</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+    <image:image>
+      <image:loc>https://neroprdo.github.io/PORTIFOLIO_PEDRO/images/profile/Header_01.jpg</image:loc>
+      <image:caption>Header - Portfólio de Pedro (NeroPRDO)</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://neroprdo.github.io/PORTIFOLIO_PEDRO/images/about/teatro_01.jpg</image:loc>
+      <image:caption>Projeto 1 - Portfólio de Pedro</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://neroprdo.github.io/PORTIFOLIO_PEDRO/index.html</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+</urlset>
