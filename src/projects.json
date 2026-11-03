@@ -1,0 +1,9 @@
+[
+ {"id":1,"name":"ajuda.cantina","category":"web","year":"2026","repo":"ajudacantina","live":"https://neroprdo.github.io/ajudacantina/","tags":["JavaScript","PWA","i18n"],"image":"assets/ajuda-preview.png","style":"canteen"},
+ {"id":2,"name":"BANTADS","category":"systems","year":"2026","repo":"bantads_pedro_","tags":["Angular","Kotlin / Spring","RabbitMQ","PostgreSQL"],"style":"banking"},
+ {"id":3,"name":"Divisão de Despesas","category":"mobile","year":"2026","repo":"Divisao-Despesas","tags":["React Native","Expo","TypeScript","Supabase"],"style":"expenses"},
+ {"id":4,"name":"DIEGÉTIKA","category":"web","year":"2026","repo":"DIEGETIKA","live":"https://neroprdo.github.io/DIEGETIKA/","editor":"https://github.com/NeroPRDO/DIEGETIKA-HUB","tags":["JavaScript","React","TypeScript","WebP"],"image":"assets/diegetika-preview.png","style":"theatre"},
+ {"id":5,"name":"Manutenção de Equipamentos","category":"web","year":"2025","repo":"Manutencao-Equipamentos","tags":["Angular","Java","Spring Boot","REST"],"style":"maintenance"},
+ {"id":7,"name":"Compactação e Busca","category":"systems","year":"2025","repo":"Compactacao-e-Busca","tags":["C11","LZW","KMP"],"style":"compression"},
+ {"id":6,"name":"Shell Backup","category":"systems","year":"2025","repo":"Shell_Backup_Script","tags":["Bash","rsync","cron","Linux"],"style":"backup"}
+]

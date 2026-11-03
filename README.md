@@ -1,116 +1,55 @@
-# PORTFÓLIO — Pedro (NeroPRDO)
+# Pedro Dall’Agnol · Portfólio
 
-> Portfólio pessoal de Pedro — site estático em **HTML / CSS / JavaScript**, publicado via **GitHub Pages**.  
-> Projeto pensado para apresentar projetos, habilidades e contatos com layout responsivo, acessível e visualmente agradável.
+Portfólio profissional estático, inspirado em Yggdrasil e no cartão pessoal preto e dourado. Publicado no [GitHub Pages](https://neroprdo.github.io/PORTIFOLIO_PEDRO/).
 
----
+## Executar e atualizar
 
-## ✨ Visão geral
+Requer Node.js 22 ou superior. Não há dependências de produção nem etapa de instalação.
 
-Este repositório contém o código-fonte do meu portfólio pessoal. O objetivo principal é mostrar trabalhos, competências técnicas e informações de contato de forma direta, profissional e compatível com dispositivos móveis. O site foi estruturado para ser simples de manter e fácil de expandir com novos projetos.
-
-**Principais tecnologias**
-- HTML5
-- CSS3
-- JavaScript (vanilla)
-- Recursos estáticos (imagens, ícones)
-
----
-
-## 🔎 Estrutura do projeto
-
+```sh
+npm run build
+npm test
+npm run dev
 ```
-PORTIFOLIO_PEDRO/
-│   README.md
-│
-├───images
-│   ├───about
-│   │       airsoft_01.jpg
-│   │       escrita_01.jpg
-│   │       escrita_02.jpg
-│   │       escrita_03.jpg
-│   │       marcena_01.jpg
-│   │       music_01.jpg
-│   │       music_02.jpg
-│   │       music_03.jpg
-│   │       teatro_01.jpg
-│   │       teatro_02.jpg
-│   │       teatro_03.jpg
-│   │
-│   ├───journey
-│   │       jour_2020.jpg
-│   │       jour_2024.jpg
-│   │       jour_20242.jpg
-│   │       jour_20243.jpg
-│   │
-│   ├───profile
-│   │       Header_01.jpg
-│   │
-│   └───projects
-│           proje_01.jpg
-│           proje_02.jpg
-│           proje_03.jpg
-│
-├───Main
-│       index.html
-│
-├───Script
-│       animations.js
-│       carousel.js
-│       main.js
-│       particles.js
-│
-└───Styles
-        styles.css
-```
----
 
-## 🎯 Objetivos deste portfólio
+Prévia: `http://127.0.0.1:4185/PORTIFOLIO_PEDRO/`.
 
-- Apresentar de forma clara e objetiva quem eu sou (bio curta), minhas habilidades e experiências.
-- Mostrar projetos com imagens, descrições, técnicas utilizadas e links (quando aplicável).
-- Facilitar o contato (links para e-mail, LinkedIn, GitHub e redes).
-- Ser responsivo e com boa experiência em mobile.
-- Ser um cartão de visitas técnico — útil para recrutadores e para clientes em potencial.
+- `src/template.html`: estrutura semântica das páginas.
+- `src/en.json`, `pt-BR.json`, `pt-PT.json`, `fr.json`, `es.json`, `de.json`, `pl.json`, `it.json`, `kea-CV.json`: traduções completas.
+- `src/projects.json`: seleção, links e tecnologias dos projetos.
+- `scripts/build.mjs`: gera `index.html`, as oito traduções e `sitemap.xml`.
+- `assets/styles.css`: composição, responsividade, contraste, impressão e movimento reduzido.
+- `assets/app.js`: navegação, filtros, preferências e consentimento de estatísticas.
+- `tests/site.test.mjs`: integridade das páginas, conteúdo, links e comportamento do Analytics.
 
----
+Após editar fontes ou traduções, execute o build e os testes. Versione também as páginas HTML geradas. O site funciona na raiz ou em `/PORTIFOLIO_PEDRO/`. A versão de entrada é inglesa, com escolha explícita de idioma e preferência salva no navegador. Links de idioma preservam a seção atual.
 
-## ✅ Funcionalidades implementadas
+## Experiência e acessibilidade
 
-- Layout responsivo (desktop / tablet / mobile).
-- Menu de navegação (com comportamento adaptado para telas pequenas).
-- Seção “Sobre” com apresentação pessoal.
-- Seção de projetos com miniaturas e descrições.
-- Galeria de imagens e ou cards de projetos.
-- Links de contato (e-mail, GitHub, LinkedIn).
-- Uso básico de meta tags (viewport, description) para SEO e responsividade.
-- Estrutura limpa que facilita atualizações e inclusão de novos projetos.
+- Conteúdo de todas as páginas pré-renderizado e legível sem JavaScript.
+- Navegação da árvore e menu com destinos equivalentes; links de salto, foco visível, diálogos nativos e títulos hierárquicos.
+- Tamanhos de texto 100%, 125% e 150%; zoom nativo do navegador permanece liberado.
+- Contraste ampliado e preferência de movimento reduzido; configuração do sistema tem prioridade.
+- Animação da copa limitada a 36 partículas e pausada fora da tela ou com aba inativa.
+- Filtros acessíveis com anúncio de resultados e contatos diretos por email/WhatsApp.
+- Preferências de acessibilidade e idioma são locais. Tradução de crioulo cabo-verdiano usa Santiago como referência e deve ser revista por falantes antes de ser tratada como tradução certificada.
 
----
+Os testes automatizados e a revisão visual não equivalem a uma certificação WCAG. Recomenda-se complementar com testes de leitores de tela e usuários reais.
 
+## Projetos e informações
 
-- Desenvolvido por **Pedro (NeroPRDO)**.
+Curadoria baseada em repositórios públicos consultados em 03/11/2026: ajuda.cantina, BANTADS, Divisão de Despesas, DIEGÉTIKA + HUB, Manutenção de Equipamentos, Compactação e Busca e Shell Backup. As descrições não atribuem clientes, métricas comerciais, autoria exclusiva em equipes ou recursos não verificados. Datas são anos dos repositórios/projetos, não declarações de experiência empregatícia.
 
----
+Formação informada pelo titular: TADS/UFPR 2024–2027, conclusão prevista ao final de 2027; mobilidade em Engenharia Informática no IPB, Bragança, Portugal, em 2026–2027. Não é apresentada como dupla diplomação.
 
-## 📬 Contato
+## Imagens
 
-- GitHub: `https://github.com/NeroPRDO`
-- LinkedIn: (https://www.linkedin.com/in/pedro-dall-agnol-3378a1365/)
-- E-mail: pedro.dallagnol.nr515@gmail.com
+Árvore e raízes: materiais fornecidos na pasta `FOTOS`. Retrato: imagem já utilizada no portfólio anterior. Marca vetorial: criada para esta interface. Logotipo UFPR: arquivo fornecido pelo titular, usado na identificação acadêmica. Prévias ajuda.cantina e DIEGÉTIKA: capturas dos projetos públicos. Os gráficos de BANTADS e Divisão de Despesas são composições ilustrativas, não capturas de interfaces. Não foram utilizadas fotos extraídas do Instagram.
 
----
+## Google Analytics
 
-## 🧾 Histórico de versões
+Propriedade original preservada: `G-XWFKEVEDM5`. Uma escolha discreta aparece na primeira visita. O script do Google só é carregado após aceite, e a decisão pode ser alterada em “Privacidade e estatísticas” no rodapé. A recusa impede o carregamento; a revogação desativa o identificador e remove cookies `_ga` acessíveis ao site. Isso significa que visitantes sem consentimento não aparecem no Analytics.
 
-- **v1.0** — Versão inicial: layout, seções principais e publicação no GitHub Pages.
-- **v1.1** — Otimizações de imagens e pequenas correções de responsividade.
+## Publicação
 
----
-
-## 🙌 Observações finais
-
-Obrigado por acessar este repositório! Este README foi pensado para ser um guia prático e uma vitrine do projeto:
-
-
----
+As páginas estáticas geradas ficam na raiz da branch `main`, compatíveis com GitHub Pages configurado para publicar dessa branch. A branch `Backup` não faz parte do fluxo e não deve ser modificada. O workflow de CI verifica testes e se os HTMLs estão sincronizados com as fontes; não altera a configuração de hospedagem.
