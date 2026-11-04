@@ -21,11 +21,15 @@
   <script type="module" src="assets/app.js"></script>
   <link rel="stylesheet" href="assets/experience.css">
   <script defer src="assets/vendor/matter.min.js"></script>
+  <script defer src="assets/cinematic.js"></script>
   <script defer src="assets/experience.js"></script>
+  <script defer src="assets/soundscape.js"></script>
+  <link rel="stylesheet" href="assets/cinematic.css">
   <script type="application/ld+json">{{structuredData}}</script>
 </head>
 <body>
   <canvas id="ether-field" aria-hidden="true"></canvas>
+  <div class="sound-controls js-only"><button id="sound-toggle" aria-pressed="false" aria-label="{{soundOn}}" title="{{soundOn}}">♫</button><label><span class="sr-only">{{soundVolume}}</span><input id="sound-volume" aria-label="{{soundVolume}}" type="range" min="0" max="100" value="25"></label></div>
   <div id="cursor-aura" aria-hidden="true"></div>
   <a class="skip-link" href="#main">{{skip}}</a>
   <div class="reading-progress" aria-hidden="true"></div>
@@ -40,7 +44,8 @@
   </header>
   <main id="main" tabindex="-1">
     <svg id="story-thread" aria-hidden="true"><defs><linearGradient id="thread-gradient" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f6cc78"/><stop offset=".5" stop-color="#78cfc5"/><stop offset="1" stop-color="#dcb4ff"/></linearGradient></defs><path class="thread-guide"/><path class="thread-light"/><circle class="thread-head" r="5"/></svg>
-    <section id="home" class="hero" aria-labelledby="hero-title">
+    <div id="intro-stage"><section id="home" class="hero" aria-labelledby="hero-title">
+      <a class="scene-skip js-only" href="#story-1">{{skipScene}} ↓</a><div class="intro-dark" aria-hidden="true"></div><div class="intro-spark" aria-hidden="true"></div>
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-copy">
         <p class="eyebrow availability"><span class="status-dot" aria-hidden="true"></span>{{availability}}</p>
@@ -64,6 +69,7 @@
       </div>
       <div class="hero-bottom"><p>{{location}}</p><a href="#work">{{scroll}} <span aria-hidden="true">↓</span></a><span class="coordinates" aria-hidden="true">41°48′ N · 6°45′ W</span></div>
     </section>
+    </div>
     {{story1}}
     <div class="discipline-band" aria-hidden="true"><span>FRONT END</span><i>✳</i><span>BACK END</span><i>✳</i><span>{{s3}}</span><i>✳</i><span>{{s4}}</span><i>✳</i><span>SOFTWARE</span><i>✳</i></div>
     <section id="work" class="section work-section" aria-labelledby="work-title">
@@ -83,7 +89,7 @@
       <div class="section-top"><p class="eyebrow">{{skillsEyebrow}}</p><span class="rune" aria-hidden="true">ᚨ</span></div>
       <div class="section-intro"><h2 id="skills-title" class="linebreak">{{skillsTitle}}</h2><p>{{skillsIntro}}</p></div>
       <div class="skills-grid">{{skillsCards}}</div>
-      <div class="physics-lab"><div class="physics-heading"><div><h3>{{physicsTitle}}</h3><p>{{physicsIntro}}</p></div><div class="physics-controls js-only"><button class="button button-outline" id="physics-kick">{{physicsKick}} ↗</button><button class="icon-button" id="physics-reset" aria-label="{{physicsReset}}" title="{{physicsReset}}">↺</button><button class="icon-button" id="physics-pause" aria-label="{{physicsPause}}" title="{{physicsPause}}" aria-pressed="false">Ⅱ</button></div></div><div id="physics-stage"><canvas id="physics-canvas" aria-hidden="true"></canvas><div class="physics-fallback" aria-hidden="true"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>SQL</span><span>React</span><span>Python</span><span>Git</span><span>Java</span></div></div><p class="physics-static-note">{{physicsStatic}}</p></div>
+      <div class="physics-lab"><div class="physics-heading"><div><h3>{{physicsTitle}}</h3><p>{{physicsIntro}}</p></div><div class="physics-controls js-only"><button class="button button-outline" id="physics-kick">{{physicsKick}} ↗</button><button class="icon-button" id="physics-reset" aria-label="{{physicsReset}}" title="{{physicsReset}}">↺</button><button class="icon-button" id="physics-pause" aria-label="{{physicsPause}}" title="{{physicsPause}}" aria-pressed="false">Ⅱ</button></div></div><div class="physics-settings js-only"><label>{{gravityMode}} <select id="gravity-mode"><option value="down">{{gravityDown}}</option><option value="float">{{gravityFloat}}</option><option value="up">{{gravityUp}}</option><option value="vortex">{{gravityVortex}}</option></select></label><label>{{gravityStrength}} <input id="gravity-force" type="range" min="0.2" max="2" step="0.1" value="1"></label><button class="button button-outline" id="physics-scatter">{{physicsScatter}} ✦</button></div><div id="physics-stage"><canvas id="physics-canvas" aria-hidden="true"></canvas><div class="physics-fallback" aria-hidden="true"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>SQL</span><span>React</span><span>Python</span><span>Git</span><span>Java</span></div></div><p class="physics-static-note">{{physicsStatic}}</p></div>
     </section>
     {{story5}}
     <section id="journey" class="section journey-section" aria-labelledby="journey-title">
@@ -97,6 +103,7 @@
       </div></div><div class="journey-meter" aria-hidden="true"><i></i></div></div></div>
     </section>
     {{story6}}
+    <section id="moon-stage" aria-labelledby="moon-title"><div class="moon-sticky"><svg class="moon-connector" aria-hidden="true"><path/></svg><div class="moon-heading"><p class="eyebrow">{{storyLabel}}</p><h2 id="moon-title">{{moonTitle}}</h2><p>{{moonIntro}}</p></div><div class="moon-system"><figure class="moon-large"><canvas id="moon-large" width="240" height="240" aria-hidden="true"></canvas><figcaption>{{moonLarge}}</figcaption></figure><figure class="moon-small"><canvas id="moon-small" width="180" height="180" aria-hidden="true"></canvas><figcaption>{{moonSmall}}</figcaption></figure></div><div class="moon-phase"><p id="moon-phase-name">{{moonNew}}</p><div class="phase-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="moon-dark" aria-hidden="true"></div><a class="scene-skip" href="#contact">{{skipScene}} ↓</a></div></section>
     <section id="contact" class="section contact-section" aria-labelledby="contact-title"><span class="contact-rune" aria-hidden="true">ᛉ</span><p class="eyebrow">{{contactEyebrow}}</p><h2 id="contact-title" class="linebreak">{{contactTitle}}</h2><p class="contact-intro">{{contactIntro}}</p><div class="contact-actions"><a class="button button-gold" href="mailto:pedro.dallagnol.nr515@gmail.com">{{email}} <span aria-hidden="true">↗</span></a><a class="button button-outline" href="https://wa.me/5541997773512" target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a></div><div class="email-row"><a href="mailto:pedro.dallagnol.nr515@gmail.com">pedro.dallagnol.nr515@gmail.com</a><button class="js-only copy-button" id="copy-email" aria-label="{{copy}}" title="{{copy}}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M15 8V4H4v11h4"/></svg></button></div><p class="contact-phone"><a href="tel:+5541997773512">+55 41 99777-3512</a> <span>Bragança, Portugal</span></p><div class="social-links"><a href="https://github.com/NeroPRDO" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="https://www.linkedin.com/in/pedro-dall-agnol-3378a1365/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><a href="https://www.instagram.com/pedro_dall.agnol/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href="https://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K1287672A4" target="_blank" rel="noopener noreferrer">Lattes ↗</a></div></section>
     <div class="story-finale"><svg viewBox="0 0 300 300" aria-hidden="true"><use href="assets/story-marks.svg#sisters"/></svg><p>{{storyEnd}}</p><a href="#home" class="button button-outline replay-link">{{storyReplay}} <span aria-hidden="true">↑</span></a></div>
   </main>

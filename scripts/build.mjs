@@ -27,7 +27,7 @@ for(const [locale,short] of languages){
   skillsCards:technologies.map((list,i)=>`<article class="skill-card"><span class="skill-number" aria-hidden="true">0${i+1}</span><h3>${escape(t[`s${i+1}`])}</h3><p>${escape(t[`s${i+1}Body`])}</p>${tags(list)}</article>`).join(''),
   languageLinks:languages.map(([code,,name])=>`<a href="${filename(code)}" lang="${code}" hreflang="${code}" ${code===locale?'aria-current="page"':''}>${name}</a>`).join(''),
   alternates:languages.map(([code])=>`<link rel="alternate" hreflang="${code}" href="${base+filename(code)}">`).join('\n')+`\n<link rel="alternate" hreflang="x-default" href="${base}">`,
-  messages:JSON.stringify(Object.fromEntries(['projectCount','copied','copyError','analyticsSaved','physicsPause','physicsResume','viewImage'].map(k=>[k,t[k]]))).replaceAll('<','\\u003c'),
+  messages:JSON.stringify(Object.fromEntries(['projectCount','copied','copyError','analyticsSaved','physicsPause','physicsResume','viewImage','soundOn','soundOff','moonNew','moonWaxCrescent','moonFirstQuarter','moonWaxGibbous','moonFull','moonWanGibbous','moonLastQuarter','moonWanCrescent'].map(k=>[k,t[k]]))).replaceAll('<','\\u003c'),
   structuredData:JSON.stringify({'@context':'https://schema.org','@type':'Person',name:'Pedro Eduardo Dall’Agnol',url:base,jobTitle:t.heroRole,image:base+'assets/portrait.jpeg',email:'mailto:pedro.dallagnol.nr515@gmail.com',sameAs:['https://github.com/NeroPRDO','https://www.linkedin.com/in/pedro-dall-agnol-3378a1365/'],address:{'@type':'PostalAddress',addressLocality:'Bragança',addressCountry:'PT'}})
  };
  const html=template.replace(/\{\{(\w+)\}\}/g,(_,key)=>{if(!(key in values))throw Error(`Missing template value: ${key}`);return values[key];});

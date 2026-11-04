@@ -11,11 +11,11 @@ function applyPreferences(){
  const size=[100,125,150].includes(prefs.size)?prefs.size:100;
  root.style.fontSize=size+'%';root.classList.toggle('large-text',size>100);
  root.classList.toggle('high-contrast',prefs.contrast===true);
- root.classList.toggle('reduce-motion',prefs.motion===true||(prefs.motion!==false&&motionQuery.matches));
+ root.classList.toggle('reduce-motion',prefs.motion===true);
  root.classList.toggle('native-cursor',prefs.cursor===false);
  $(`input[name="text-size"][value="${size}"]`).checked=true;
- $('#motion').checked=prefs.motion===true||(prefs.motion!==false&&motionQuery.matches);
- root.classList.toggle('allow-motion',prefs.motion===false);
+ $('#motion').checked=prefs.motion===true;
+ root.classList.toggle('allow-motion',prefs.motion!==true);
  $('#contrast').checked=prefs.contrast===true;
  $('#magic-cursor').checked=prefs.cursor!==false;
  window.dispatchEvent(new Event('preferenceschange'));
@@ -105,8 +105,8 @@ window.addEventListener('scroll',()=>{if(!scrollPending){requestAnimationFrame(u
 const canvas=$('#tree-particles'),ctx=canvas.getContext('2d'),world=$('.tree-world');
 let width=0,height=0,visible=true,frame=0,last=0,particles=[];
 let pointer={x:-1000,y:-1000};
-function resizeCanvas(){const r=world.getBoundingClientRect();width=r.width;height=r.height;const dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=width*dpr;canvas.height=height*dpr;ctx?.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:80},(_,i)=>({x:((i*137.5)%360)/360*width,y:((i*71)%100)/100*height,r:1+(i%4)*.45,speed:.13+(i%4)*.065,phase:i*.7}))}
+function resizeCanvas(){width=world.clientWidth;height=world.clientHeight;const dpr=Math.min(devicePixelRatio||1,1.5);canvas.width=width*dpr;canvas.height=height*dpr;ctx?.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:80},(_,i)=>({x:((i*137.5)%360)/360*width,y:((i*71)%100)/100*height,r:1+(i%4)*.45,speed:.13+(i%4)*.065,phase:i*.7}))}
 function canAnimate(){return ctx&&visible&&!document.hidden&&!root.classList.contains('reduce-motion')}
 function draw(now){frame=0;if(!canAnimate())return;const dt=Math.min(now-last||16,40);last=now;ctx.clearRect(0,0,width,height);for(const p of particles){p.y-=p.speed*dt/16;if(p.y<0)p.y=height;const x=p.x+Math.sin(now/3500+p.phase)*7;const distance=Math.hypot(x-pointer.x,p.y-pointer.y);ctx.globalAlpha=distance<130?.95:.45+Math.sin(now/1700+p.phase)*.24;ctx.shadowBlur=9;ctx.shadowColor='#edc77b';ctx.fillStyle=p.phase%3>1?'#e3c187':'#a6dcd0';ctx.beginPath();ctx.arc(x,p.y,p.r,0,Math.PI*2);ctx.fill();if(distance<130){ctx.globalAlpha=(1-distance/130)*.4;ctx.strokeStyle='#f6ce82';ctx.beginPath();ctx.moveTo(x,p.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke()}}ctx.globalAlpha=1;ctx.shadowBlur=0;frame=requestAnimationFrame(draw)}
 function syncAnimation(){if(frame){cancelAnimationFrame(frame);frame=0}if(canAnimate())frame=requestAnimationFrame(draw);else{ctx?.clearRect(0,0,width,height);world.style.setProperty('--tree-x','0px');world.style.setProperty('--tree-y','0px')}}
-if(ctx){resizeCanvas();new ResizeObserver(()=>{resizeCanvas();syncAnimation()}).observe(world);if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncAnimation()}).observe(world);world.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||!canAnimate())return;const r=world.getBoundingClientRect();pointer={x:e.clientX-r.left,y:e.clientY-r.top};world.style.setProperty('--tree-x',((pointer.x/width-.5)*8)+'px');world.style.setProperty('--tree-y',((pointer.y/height-.5)*8)+'px')});world.addEventListener('pointerleave',()=>{pointer={x:-1000,y:-1000};world.style.setProperty('--tree-x','0px');world.style.setProperty('--tree-y','0px')});document.addEventListener('visibilitychange',syncAnimation);window.addEventListener('preferenceschange',syncAnimation);syncAnimation()}
+if(ctx){resizeCanvas();new ResizeObserver(()=>{resizeCanvas();syncAnimation()}).observe(world);if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncAnimation()}).observe(world);world.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||!canAnimate())return;const r=world.getBoundingClientRect();pointer={x:(e.clientX-r.left)*width/r.width,y:(e.clientY-r.top)*height/r.height};world.style.setProperty('--tree-x',((pointer.x/width-.5)*8)+'px');world.style.setProperty('--tree-y',((pointer.y/height-.5)*8)+'px')});world.addEventListener('pointerleave',()=>{pointer={x:-1000,y:-1000};world.style.setProperty('--tree-x','0px');world.style.setProperty('--tree-y','0px')});document.addEventListener('visibilitychange',syncAnimation);window.addEventListener('preferenceschange',syncAnimation);syncAnimation()}

@@ -133,7 +133,7 @@ test('six distinct story chapters retain their order and translated prose', () =
     }
     assert.equal(new Set(titles).size, 6, `${locale}: repeated story titles`);
     assert.equal(new Set(bodies).size, 6, `${locale}: repeated story prose`);
-    for (const name of ['Rrenner', 'Êmer', 'Tarik']) assert.ok(bodies.join(' ').includes(name), `${locale}: missing story character ${name}`);
+    for (const name of ['Rrenner', 'Êmer', 'Tarik', 'Winholm']) assert.ok(!bodies.join(' ').includes(name), `${locale}: obsolete story name ${name}`);
   }
 });
 
@@ -268,12 +268,27 @@ test('saved consent restores analytics on a later visit', () => {
   assert.equal(new URL(session.scripts[0].src).searchParams.get('id'), 'G-XWFKEVEDM5');
 });
 
-test('motion defaults follow the system and explicit visitor choices override it', () => {
-  for (const [system, choice, expected] of [[true, undefined, true], [false, undefined, false], [true, false, false], [false, true, true]]) {
+test('motion starts enabled and respects explicit reduction', () => {
+  for (const [system, choice, expected] of [[true, undefined, false], [false, undefined, false], [true, false, false], [false, true, true]]) {
     const classes = new Set();
     const document = {documentElement:{style:{}, classList:{add:x=>classes.add(x),toggle:(x,on)=>on?classes.add(x):classes.delete(x)}}};
     vm.runInNewContext(read('assets/preferences.js'), {document,localStorage:{getItem:()=>JSON.stringify(choice===undefined?{}:{motion:choice})},matchMedia:()=>({matches:system})});
     assert.equal(classes.has('reduce-motion'), expected);
-    assert.equal(classes.has('allow-motion'), choice===false);
+    assert.equal(classes.has('allow-motion'), choice!==true);
+  }
+});
+
+
+test('lunar finale follows the tale and precedes contact in every language', () => {
+  for (const locale of locales) {
+    const html=read(pageName(locale)), t=JSON.parse(read(`src/${locale}.json`));
+    assert.ok(html.indexOf('id="story-6"') < html.indexOf('id="moon-stage"'));
+    assert.ok(html.indexOf('id="moon-stage"') < html.indexOf('id="contact"'));
+    for (const id of ['moon-large','moon-small','gravity-mode','gravity-force','physics-scatter','sound-toggle','sound-volume']) assert.ok(html.includes(`id="${id}"`));
+    assert.match(html, /id="sound-toggle" aria-pressed="false"/);
+    for(const key of ['moonNew','moonWaxCrescent','moonFirstQuarter','moonWaxGibbous','moonFull','moonWanGibbous','moonLastQuarter','moonWanCrescent']) assert.ok(t[key]?.length);
+    for(let i=1;i<=6;i++) assert.ok(t[`story${i}Body`].split(/\s+/).length>=60, `${locale}: story ${i} is too short`);
+    assert.ok(html.includes('href="#story-1"'));
+    assert.ok(html.includes('class="moon-connector"'));
   }
 });

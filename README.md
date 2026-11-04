@@ -29,7 +29,7 @@ Após editar fontes ou traduções, execute o build e os testes. Versione també
 - Conteúdo de todas as páginas pré-renderizado e legível sem JavaScript.
 - Navegação da árvore e menu com destinos equivalentes; links de salto, foco visível, diálogos nativos e títulos hierárquicos.
 - Tamanhos de texto 100%, 125% e 150%; zoom nativo do navegador permanece liberado.
-- Contraste ampliado e preferência de movimento reduzido; o sistema define o padrão e o visitante pode escolher outra opção explicitamente.
+- Contraste ampliado e preferência de movimento reduzido; movimento ativado por padrão conforme a direção do projeto; o visitante pode reduzir os efeitos a qualquer momento.
 - Animação da copa limitada a 80 partículas e pausada fora da tela ou com aba inativa.
 - Filtros acessíveis com anúncio de resultados e contatos diretos por email/WhatsApp.
 - Preferências de acessibilidade e idioma são locais. Tradução de crioulo cabo-verdiano usa Santiago como referência e deve ser revista por falantes antes de ser tratada como tradução certificada.
@@ -56,6 +56,14 @@ As páginas estáticas geradas ficam na raiz da branch `main`, compatíveis com 
 
 ## Interações e narrativa
 
-`assets/experience.js` e `assets/experience.css` implementam o conto autoral de Varnor em seis capítulos traduzidos, com fio SVG desenhado pela posição de rolagem, zoom da árvore, círculo rúnico horário, cursor e rastros luminosos. A rolagem permanece nativa, sem bloquear roda, toque ou teclado. A jornada usa deslocamento horizontal em telas com espaço suficiente e cartões verticais em telas pequenas, texto ampliado ou movimento reduzido.
+`assets/experience.js` e `assets/experience.css` implementam o conto autoral de Varnor em seis capítulos traduzidos, com fio SVG desenhado pela posição de rolagem, zoom da árvore, círculo rúnico horário, cursor e rastros luminosos. A rolagem permanece nativa, sem bloquear roda, toque ou teclado. A jornada usa deslocamento horizontal também em celulares com altura suficiente; texto ampliado, janelas muito baixas e movimento reduzido usam cartões em fluxo normal.
 
 O laboratório de tecnologias usa Matter.js para colisões, gravidade e arraste. Inclui impulso, reorganização e pausa por botões. Efeitos param quando a aba está inativa; física e GIF param fora da área visível. Movimento reduzido mantém a história e o conteúdo acessíveis sem animação. Os rastros do fundo são partículas Canvas 2D, não uma simulação de fluidos WebGL.
+
+## Cenas, chuva e áudio
+
+`cinematic.js` coordena a abertura (árvore centralizada, zoom, escuridão e centelha) e o encerramento com duas luas procedurais. Ambas percorrem oito fases, seguidas de zoom e entrada do contato. Trechos sticky mais longos dão ritmo à rolagem sem interceptar gestos de toque. Links “Pular cena” mantêm acesso rápido. Aumento de texto e janelas baixas usam uma apresentação sem captura de rolagem.
+
+A chuva dourada Canvas reage ao vento, ao toque/ponteiro e à ponta do fio; reduz a intensidade sobre projetos e apresentação pessoal. O laboratório permite gravidade para baixo/cima, ausência de peso, vórtice, ajuste de força, impulso, dispersão e pausa. Em telas de toque, tocar em um bloco aplica impulso; a página mantém a rolagem vertical.
+
+`soundscape.js` sintetiza uma trilha instrumental original com camadas sustentadas, sinos e pulsos, variando harmonia/timbre conforme treze pontos da história e do portfólio. Inicia somente pelo botão de música e inclui volume e silenciamento. Nenhum áudio externo ou vocal é utilizado. A aba oculta suspende o áudio; silenciar suspende o processamento depois da transição de volume.

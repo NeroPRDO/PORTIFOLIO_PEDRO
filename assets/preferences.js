@@ -5,6 +5,6 @@ try {
  if([100,125,150].includes(p.size)){document.documentElement.style.fontSize=p.size+'%';document.documentElement.classList.toggle('large-text',p.size>100);}
  document.documentElement.classList.toggle('high-contrast',p.contrast===true);
  document.documentElement.classList.toggle('native-cursor',p.cursor===false);
- document.documentElement.classList.toggle('reduce-motion',p.motion===true||(p.motion!==false&&matchMedia('(prefers-reduced-motion: reduce)').matches));
- document.documentElement.classList.toggle('allow-motion',p.motion===false);
+ document.documentElement.classList.toggle('reduce-motion',p.motion===true);
+ document.documentElement.classList.toggle('allow-motion',p.motion!==true);
 }catch{}
