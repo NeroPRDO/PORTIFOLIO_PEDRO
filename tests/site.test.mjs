@@ -85,13 +85,114 @@ test('project selection has unique IDs, real repository destinations and no excl
   for (const project of projects) {
     assert.match(project.repo, /^[A-Za-z\d_.-]+$/, 'invalid repository path');
     assert.ok(!excluded.some(repo => repo.toLowerCase() === project.repo.toLowerCase()));
-    assert.ok(['web', 'systems', 'mobile'].includes(project.category), 'project cannot be reached by filters');
+    assert.ok(['web', 'systems', 'mobile', 'games'].includes(project.category), 'project cannot be reached by filters');
     assert.ok(Array.isArray(project.tags) && project.tags.length > 0, 'missing technology context');
     for (const locale of locales) {
       const dictionary = JSON.parse(read(`src/${locale}.json`));
       assert.ok(dictionary[`p${project.id}Desc`], `${locale}: missing description for ${project.repo}`);
       assert.ok(dictionary[`p${project.id}Type`], `${locale}: missing type for ${project.repo}`);
     }
+  }
+});
+
+test('Tetris remains discoverable through the games filter in every language', () => {
+  const projects = JSON.parse(read('src/projects.json'));
+  const tetris = projects.find(project => project.repo === 'TETRIS');
+  assert.ok(tetris, 'Tetris is missing from selected projects');
+  assert.equal(tetris.category, 'games');
+  assert.ok(tetris.image && tetris.motionImage, 'Tetris needs static and animated previews');
+  for (const locale of locales) {
+    const html = read(pageName(locale));
+    const dictionary = JSON.parse(read(`src/${locale}.json`));
+    assert.match(html, /<button\b[^>]*data-filter="games"[^>]*aria-pressed="false"/);
+    const article = html.match(new RegExp(`<article\\b[^>]*id="project-${tetris.id}"[\\s\\S]*?<\\/article>`))?.[0];
+    assert.ok(article, `${locale}: Tetris is not rendered`);
+    assert.match(article, /data-category="games"/);
+    assert.ok(article.includes('https://github.com/NeroPRDO/TETRIS'));
+    assert.ok(article.includes(dictionary.p8Desc), `${locale}: wrong Tetris description`);
+  }
+});
+
+const htmlEscape = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+
+test('six distinct story chapters retain their order and translated prose', () => {
+  const english = JSON.parse(read('src/en.json'));
+  for (const locale of locales) {
+    const html = read(pageName(locale));
+    const dictionary = JSON.parse(read(`src/${locale}.json`));
+    const chapters = [...html.matchAll(/<aside\b[^>]*id="story-(\d+)"[\s\S]*?<\/aside>/g)];
+    assert.deepEqual(chapters.map(chapter => Number(chapter[1])), [1, 2, 3, 4, 5, 6], `${locale}: missing, duplicated or reordered story chapters`);
+    const titles = [], bodies = [];
+    for (const [markup, number] of chapters) {
+      const title = dictionary[`story${number}Title`], body = dictionary[`story${number}Body`];
+      titles.push(title); bodies.push(body);
+      assert.ok(markup.includes(htmlEscape(title)), `${locale}: chapter ${number} title mismatch`);
+      assert.ok(markup.includes(htmlEscape(body)), `${locale}: chapter ${number} prose mismatch`);
+      assert.ok(markup.includes(`aria-labelledby="story-title-${number}"`));
+      if (locale !== 'en') assert.notEqual(body, english[`story${number}Body`], `${locale}: untranslated story chapter ${number}`);
+    }
+    assert.equal(new Set(titles).size, 6, `${locale}: repeated story titles`);
+    assert.equal(new Set(bodies).size, 6, `${locale}: repeated story prose`);
+    for (const name of ['Rrenner', 'Êmer', 'Tarik']) assert.ok(bodies.join(' ').includes(name), `${locale}: missing story character ${name}`);
+  }
+});
+
+test('journey starts in 2020 and keeps learning separate from project descriptions', () => {
+  for (const locale of locales) {
+    const html = read(pageName(locale));
+    const dictionary = JSON.parse(read(`src/${locale}.json`));
+    const journey = html.match(/<section\b[^>]*id="journey"[\s\S]*?<\/section>/)?.[0];
+    assert.ok(journey, `${locale}: journey missing`);
+    assert.match(journey, /class="journey-year">2020</);
+    for (const key of ['originTitle', 'originBody', 'learningTitle', 'learningBody', 'ipbBody']) {
+      assert.ok(journey.includes(htmlEscape(dictionary[key])), `${locale}: missing ${key}`);
+    }
+    assert.ok(!journey.includes(htmlEscape(dictionary.p7Desc)), `${locale}: project description reused as biography`);
+    assert.doesNotMatch(html, /(?:src|data-image)="[^\"]*roots\.(?:jpg|png|webp)"|class="myth-note"/i);
+    assert.ok(!html.includes(htmlEscape(dictionary.aboutBody3)), `${locale}: removed mythology paragraph returned`);
+  }
+});
+
+test('image enlargement and animated previews use existing local files', () => {
+  for (const locale of locales) {
+    const html = read(pageName(locale));
+    const previews = [...html.matchAll(/<div\b[^>]*data-zoom-image="([^\"]+)"[\s\S]*?<\/div>/g)];
+    assert.ok(previews.length >= 5, `${locale}: real project previews missing`);
+    for (const [markup, image] of previews) {
+      assert.ok(attributes(markup, 'src').includes(image), `${locale}: preview does not match full image`);
+      assert.ok(attributes(markup, 'data-image').includes(image), `${locale}: no enlarge action for ${image}`);
+      assert.match(markup, /<button\b[^>]*aria-label="[^\"]+"/, `${locale}: image control lacks a name`);
+    }
+    for (const attribute of ['data-image', 'data-zoom-image', 'data-still-src', 'data-motion-src']) {
+      for (const file of attributes(html, attribute)) {
+        assert.ok(file.startsWith('assets/'), `${locale}: nonlocal ${attribute}`);
+        const absolute = path.resolve(root, file);
+        assert.ok(absolute.startsWith(root + path.sep), `${locale}: image escapes root`);
+        assert.ok(fs.existsSync(absolute) && fs.statSync(absolute).isFile(), `${locale}: missing ${attribute} ${file}`);
+      }
+    }
+    for (const tag of html.match(/<img\b[^>]*data-motion-src[^>]*>/g) ?? []) {
+      assert.equal(attributes(tag, 'data-still-src').length, 1, 'animated image has no reduced-motion alternative');
+    }
+  }
+});
+
+test('rune inscription and keyboard-operable experience controls are preserved', () => {
+  const inscription = 'ᚦᛖ ᛟᛚᛞ ᚹᚨᛁᛊ ᚨᚱᛖ ᚦᛖ ᛟᚾᛚᛁ ᛈᚨᚦ ᛏᛟ ᚠᚱᛖᛖᛞᛟᛗ';
+  for (const locale of locales) {
+    const html = read(pageName(locale));
+    assert.ok(html.includes(inscription), `${locale}: rune inscription changed`);
+    for (const id of ['journey-prev', 'journey-next', 'physics-reset', 'physics-pause']) {
+      const tag = html.match(new RegExp(`<button\\b[^>]*id="${id}"[^>]*>`))?.[0];
+      assert.ok(tag, `${locale}: ${id} is not a native button`);
+      assert.ok(attributes(tag, 'aria-label')[0]?.trim(), `${locale}: ${id} lacks an accessible name`);
+    }
+    assert.match(html, /<button\b[^>]*id="physics-kick"[^>]*>[^<]+<\/button>/);
+    assert.match(html, /<button\b[^>]*id="physics-pause"[^>]*aria-pressed="false"/);
+    const imageDialog = html.match(/<dialog\b[^>]*id="image-dialog"[\s\S]*?<\/dialog>/)?.[0];
+    assert.ok(imageDialog, `${locale}: image viewer dialog missing`);
+    assert.ok(attributes(imageDialog, 'aria-labelledby').length || attributes(imageDialog, 'aria-label').length, `${locale}: image viewer has no name`);
+    assert.match(imageDialog, /<button\b[^>]*data-close[^>]*aria-label="[^\"]+"/);
   }
 });
 
@@ -165,4 +266,14 @@ test('saved consent restores analytics on a later visit', () => {
   const session = analyticsSession(true);
   assert.equal(session.scripts.length, 1);
   assert.equal(new URL(session.scripts[0].src).searchParams.get('id'), 'G-XWFKEVEDM5');
+});
+
+test('motion defaults follow the system and explicit visitor choices override it', () => {
+  for (const [system, choice, expected] of [[true, undefined, true], [false, undefined, false], [true, false, false], [false, true, true]]) {
+    const classes = new Set();
+    const document = {documentElement:{style:{}, classList:{add:x=>classes.add(x),toggle:(x,on)=>on?classes.add(x):classes.delete(x)}}};
+    vm.runInNewContext(read('assets/preferences.js'), {document,localStorage:{getItem:()=>JSON.stringify(choice===undefined?{}:{motion:choice})},matchMedia:()=>({matches:system})});
+    assert.equal(classes.has('reduce-motion'), expected);
+    assert.equal(classes.has('allow-motion'), choice===false);
+  }
 });
